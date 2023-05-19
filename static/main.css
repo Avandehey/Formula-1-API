@@ -1,0 +1,12 @@
+*{
+    margin: none;
+    border: none;
+}
+
+body{
+    background-color: rgb(168, 0, 0)
+}
+
+.bg-gold {
+    background-color: rgb(170, 145, 1);
+  }

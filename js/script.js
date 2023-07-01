@@ -1,5 +1,5 @@
 const getData = (season, round) => {
-  axios.get(`http://ergast.com/api/f1/${season}/${round}/driverstandings.json`)
+  axios.get(`https://ergast.com/api/f1/${season}/${round}/driverstandings.json`)
     .then(response => {
       const data = response.data;
       const standings = data.MRData.StandingsTable.StandingsLists[0].DriverStandings;

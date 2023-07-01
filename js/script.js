@@ -1,10 +1,14 @@
-
 const getData = (season, round) => {
-    axios.get(`http://ergast.com/api/f1/${season}/${round}/driverstandings.json`).then(response => {
+  axios.get(`http://ergast.com/api/f1/${season}/${round}/driverstandings.json`)
+    .then(response => {
       const data = response.data;
-  
       const standings = data.MRData.StandingsTable.StandingsLists[0].DriverStandings;
-  
+
+      if (!standings || standings.length === 0) {
+        showError("No data available for the specified season and round.");
+        return;
+      }
+
       standings.forEach(driver => {
         const position = driver.position;
         const designation = driver.Driver.givenName + " " + driver.Driver.familyName;
@@ -37,7 +41,10 @@ const getData = (season, round) => {
         tableBody.appendChild(row);
       });
     })
-  };
+    .catch(error => {
+      showError("Please enter a valid Round");
+    });
+};
   
   function createColumn(label, value) {
     const column = document.createElement("td");
@@ -50,10 +57,42 @@ const getData = (season, round) => {
 
   
   getBtn.addEventListener('click', () => {
-      var season = document.querySelector('#season').value;
-      var round = document.querySelector('#round').value;
-      return getData(season, round);
-      
-  });
+    var season = document.querySelector('#season').value;
+    var round = document.querySelector('#round').value;
 
+    // Clear existing table data
+    const tableBody = document.getElementById("table-container");
+    tableBody.innerHTML = "";
+
+    // Check if the season and round inputs are valid
+    if (!isValidSeason(season)) {
+        showError("Invalid season. Please enter a valid year.");
+        return;
+    }
+
+    if (!isValidRound(round)) {
+        showError("Invalid round. Please enter a valid number.");
+        return;
+    }
+
+    // Call the getData function
+    return getData(season, round);
+});
+
+function isValidSeason(season) {
+    // Validate if the season is a valid year (four digits)
+    const regex = /^\d{4}$/;
+    return regex.test(season);
+}
+
+function isValidRound(round) {
+    // Validate if the round is a positive integer
+    const regex = /^[1-9]\d*$/;
+    return regex.test(round);
+}
+
+function showError(message) {
+    // Create and show an error pop-up message
+    alert(message);
+}
 

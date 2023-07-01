@@ -10,3 +10,7 @@ body{
 .bg-gold {
     background-color: rgb(170, 145, 1);
   }
+
+  .table td {
+    color: white;
+  }
